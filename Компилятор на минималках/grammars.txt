@@ -1,0 +1,29 @@
+G (
+
+    Vт: [A-Za-z][A-Za-z0-9_]*, [1-9][0-9]*|0, [0-9]*.[0-9]*,
+        [X]{1,3}[V]?[I]{1,3}|[X]{1,3}[V]?|[X]{0,3}[I][XV]|[V][I]{0,3}|[I]{1,3}
+
+    Vn: PROGRAM, PROGRAM_PART, LOOP, EXPR, CONDITION, NOTERM, ADD, MULT, GROUP
+
+    R:
+        PROGRAM -> {PROGRAM_PART}
+
+        PROGRAM_PART -> {LOOP} | {EXPR}
+
+        LOOP -> 'while' CONDITION {PROGRAM_PART} 'done'
+
+        CONDITION -> '(' NOTERM ('>'|'<'|'=') NOTERM ')'
+
+        EXPR -> VAR ':=' NOTERM ';'
+
+        NOTERM -> ADD
+
+        ADD -> MULT {('+'|'-') MULT}
+
+        MULT -> GROUP {('*'|'/') GROUP}
+
+        GROUP -> '(' NOTERM ')' | VAR | INT | FLOAT | ROMAN_DIGIT
+
+    S: GROUP
+)
+
